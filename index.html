@@ -13,10 +13,12 @@
     <![endif]-->
   </head>
   <body>
-    <div class="wrapper">
+    <div class="wrapper" style="margin-left: 0px;">
       <header>
-        <h1>Yelp Dataset Challenge 2014 Submission, Data Science Student Society at UCSD</h1>
-        <p>Presented by Kevin Hung and Henry Qiu on behalf of the DSSS at UCSD</p>
+      <h1>Yelp Dataset Challenge 2014 Submission</h1>
+      <h2>Data Science Student Society at UCSD</h2>
+      <p>Presented by Kevin Hung and Henry Qiu &nbsp; Representing the
+      DSSS @ UCSD</p>
 
         <p class="view"><a href="https://github.com/kevin11h/YelpDatasetChallengeDataScienceAndMachineLearningUCSD">View the Project on GitHub <small>kevin11h/YelpDatasetChallengeDataScienceAndMachineLearningUCSD</small></a></p>
 
@@ -31,18 +33,43 @@
         <h3>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h3>
 
-<p>In winter of 2014, the enthusiastic students of DSSS at UCSD entered the Yelp Dataset Challenge in order to witness how the era of Big Data impacts the business decisions of professional social review services like Yelp. In our data analysis, we've determined the difficulty in predicting user's review stars given the reviews they left as well as provided our best model and added in a few visualizations for fun.</p>
+<p>In winter of 2014, the enthusiastic students of DSSS at UCSD entered the Yelp Dataset Challenge in order to witness how the era of Big Data impacts the business decisions of professional social review services like Yelp. In our data analysis, we determine the difficulty in predicting user's review stars given the reviews they left as well as provided our best classification model, and also added in a few visualizations for fun.</p>
 
 <h3>
 <a id="data-wrangling" class="anchor" href="#data-wrangling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Wrangling</h3>
 
-<p>The first thing we noticed that the Reviews table was large so we divided into quarters. Then we simply sampled the first quarter of the Reviews and inner-joined it with the key-ids from Tips, Users, and Businesses table and ended up with the TURBO dataset with 37K records (<strong>T</strong>ips, <strong>U</strong>sers, <strong>R</strong>eviews, <strong>O</strong>nly). We later on use the Checkins table in order to find the top businesses in our similarity matrix visualization.</p>
+<p>The first thing we noticed that the Reviews table was large so we divided it into quarters. Then we simply sampled the first quarter of the Reviews and inner-joined it with the key-ids from Tips, Users, and Businesses table and ended up with the TURBO subset with 37K records (<strong>T</strong>ips, <strong>U</strong>sers, <strong>R</strong>eviews, <strong>O</strong>nly). We later on use the Checkins table in order to find the top businesses in our similarity matrix visualization.</p>
 
 <h3>
 <a id="exploratory-data-analysis" class="anchor" href="#exploratory-data-analysis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exploratory Data Analysis</h3>
 
-<p><img src="turkey.png" alt="Yelpers' Thanksgiving WordCloud">
-If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>In beginning our analysis, we were initially surprised to see that the review distributions in our subset are skewed to the 4 and 5 star categories, making up around 80% whereas the 1, 2, and 3 star categories are only 10% at most.
+<img src="images/StarCategoryDistributions.png" alt="Star Category Distributions">
+This is confirmed by <a href="http://minimaxir.com/2014/09/one-star-five-stars/"> a separate analysis </a> by Max Woolf on 1 and 5 star reviews that showed, excellent visualization aside, that Yelp reviews have started to appear more biased optimistically as time passes. Our sample subset reflects this pattern on distribution, although uneven class distribution will become noteworthy in our predictive analytics task.</p>
+<p>Next we were curious about what kinds of words, including unigrams, bigrams and trigrams, are characteristic of different star categories so we threw in some quick wordcloud visualizations using the R tm package.</p>
+<img src="images/1StarWordCloud.png"></img>
+<img src="images/2StarWordCloud.png"></img>
+<img src="images/3StarWordCloud.png"></img>
+<img src="images/4StarWordCloud.png"></img>
+<img src="images/5StarWordCloud.png"></img>
+<p>Lesson learned: if I were to start a successful business, my best bets are to open a Mexican-Chinese-BBQ buffet at Sin City with convenient parking, available Wifi, icecream on the menu, and lovely and friendly crew members.</p>
+
+<p>In EDA, we're trying to find pertinent features for the next step in predictive analytics/machine learning task, so we thought to do some factor analysis on the review text (e.g. average token length between star classes, positive/negative words rate per review, average star given by friends of reviewers, etc). We noticed after preprocessing by stemming, removing stopwords, and tokenizing the review text, the average token length sits around 20-30 tokens for all classes and mainly ranges between 0 and 150 tokens.</p>
+<img src="images/TokenLength.png"></img>
+<p>Later on in the predictive analytics task we attempted to improve our classification accuracy and we returned to feature engineering and finding correlations between factors, but we will include it here under the EDA section for organization. We correlated nearly all of the given base factors from each table except for business attributes and review dates, and included new factors like average friend stars and negative/positive word ratios.</p>
+<iframe width="600" height="500" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/25.embed?width=600&height=500"></iframe>
+<p>Most of the upper triangle of the correlation is highly correlated of course because they come from the same user table, but of particular interest to us is the bottom row on the yaxis, the Review Stars entry. This row shows us possible explanatory variables or good features we can incorporate in the next step of our predictive analytics task, in which we predict the star category given a Yelper's review. Below, we see that review stars is correlated highly with the average business star, the reviewer's average star given, negative to positive word ratio, and negative and positive word rates. The first two factors are a helpful giveaway since they are averages of review stars. However, we chose not to use them so that our classifier model is robust in applications where average business star or the user's average star is unknown. Finally, positive and negative word rates are good indicators and correlate positively and negatively accordingly with star category, and we will see later on in the predictive analytics task that the Naive Bayes naturally uses the positive and negative word rate as conditional probabilities/relative frequencies in its algorithm.</p>
+<img src="images/ReviewStarCorrelation.png"></img>
+<p>We then used MDS and visualized reviews grouped by business and word similarities, and we see that businesses are similar in their specific product and not on their star category, whereas words are similar if they appear close to each other such as when they are bigrams (e.g. slot machine).</p>
+<iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/14.embed?width=800&height=600"></iframe>
+<iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/18.embed?width=800&height=600"></iframe>
+<p>That pretty much describes the EDA, and we included a business similarity matrix for the top checked in places for fun.</p>
+<iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/16.embed?width=800&height=600"></iframe>
+
+
+<h3><a id="predictive-analytics" class="anchor" href="#predictive-analytics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predictive Analytics/Machine Learning Mission</h3>
+<p></p>
+
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
@@ -59,8 +86,8 @@ If you prefer to not use the automatic generator, push a branch named <code>gh-p
 </ul>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/kevin11h">kevin11h</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+<!--        <p>This project is maintained by <a href="https://github.com/kevin11h">kevin11h</a></p>
+<p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p> -->
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
