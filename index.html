@@ -46,7 +46,7 @@
 
 <p>In beginning our analysis, we were initially surprised to see that the review distributions in our subset were skewed to the 4 and 5 star categories heavily. They consist of around 80% of the distribution, whereas the 1, 2, and 3 star categories are each only around 10% at most.</p>
 <img src="images/StarCategoryDistributions.png" alt="Star Category Distributions">
-<p>This is confirmed by <a href="http://minimaxir.com/2014/09/one-star-five-stars/"> a separate analysis </a> by Max Woolf on 1 and 5 star reviews that showed, excellent visualization aside, that Yelp reviews have started to appear more optimistically biased as time passes. Our sample subset reflects this skewed distribution, although uneven class distribution will become noteworthy in our predictive analytics task.</p>
+<p>This is confirmed by <a href="http://minimaxir.com/2014/09/one-star-five-stars/"> a separate analysis </a> by Max Woolf on 1 and 5 star reviews which showed, excellent visualization aside, that Yelp reviews have started to appear more optimistically biased as time passes. Our sample subset reflects this skewed distribution, although uneven class distribution will become noteworthy in our predictive analytics task.</p>
 <p>Next we were curious about what kinds of words, including unigrams, bigrams and trigrams, are characteristic of different star categories so we threw in some quick wordcloud visualizations using the R "tm" package.</p>
 <h4 style="text-align: center">Wordcloud of 1 Star Reviews</h4>
 <img src="images/1StarWordCloud.png" style="display: block; margin-left: auto; margin-right: auto;"></img>
@@ -361,16 +361,16 @@ $("#prev").on("click", function(event) {
     <tbody>
         <tr>
             <td>Bag of Words Multinomial NB</td>
-       	    <td class="tdc">0.60</td>
-       	    <td class="tdc">0.59</td>
-       	    <td class="tdc">0.16</td>
-       	    <td class="tdc">0.05</td>
+       	    <td class="tdc">0.62</td>
+       	    <td class="tdc">0.62</td>
+       	    <td class="tdc">0.21</td>
+       	    <td class="tdc">0.03</td>
         </tr>
         <tr>
             <td>Bernoulli NB</td>
        	    <td class="tdc">0.55</td>
-       	    <td class="tdc">0.56</td>
-       	    <td class="tdc">0.12</td>
+       	    <td class="tdc">0.55</td>
+       	    <td class="tdc">0.30</td>
        	    <td class="tdc">0.07</td>    		
         </tr>
 
@@ -393,17 +393,17 @@ $("#prev").on("click", function(event) {
 	<tr>
 	    <td>Bigram-Trigram Multinomial NB</td>
        	    <td class="tdc">0.67</td>
-       	    <td class="tdc">0.69</td>
+       	    <td class="tdc">0.70</td>
        	    <td class="tdc">0.26</td>
        	    <td class="tdc">0.07</td>    		
 	</tr>
 
 	<tr>
 	    <td>Random Forest (100 Estimators)</td>
-       	    <td class="tdc">0.69</td>
        	    <td class="tdc">0.68</td>
-       	    <td class="tdc">0.19</td>
-       	    <td class="tdc">0.01</td>    		
+       	    <td class="tdc">0.70</td>
+       	    <td class="tdc">0.23</td>
+       	    <td class="tdc">0.04</td>    		
         </tr>
 
 	<tr>
@@ -436,6 +436,16 @@ td.tdc {
   text-align: center;
 }
 </style>
+
+<br />
+
+<p>As a short explanation, precision and recall are performance metrics of the different classification models, representing "quality" and "quantity" respectively of documents classified, and ranging between 0 and 1.
+<br />We calculated the averages of precision and recall to summarize the precision and recall of the 5 different star categories.
+<br />We also calculated the residual sum of square errors for the precision and recall, since one must take into consideration the fact that star category distributions are skewed  (RSS is a non-normalized notion of variance).
+<br />Let's look into the confusion matrices to see why RSS is necessary:</p>
+<img src="images/first_round_cm.png"></img>
+
+<p>Recall and precision RSS are necessary because, for example, in one extreme the SVC classifier attempts to classify almost all reviews as 5 stars to maximize accuracy, given that the majority of reviews are 5 stars. The recall and precision RSS values would be high because 5 star reviews would be far more accurate than 1, 2, 3 and 4 star reviews. However, this short-sighted favoritism towards 5 star reviews comes at a cost of higher inaccuracy (lower precision and recall values) for classifying the 1, 2, 3, and 4 star reviews. Even in other classifiers as well, 4 and 5 star reviews are more favored because they represent the majority (nearly 80%) of Yelp reviews, so as a result 1,2, and 3 star reviews are harder to classify with 2 stars being the most difficult. </p>
 
 <br />
 <br />
