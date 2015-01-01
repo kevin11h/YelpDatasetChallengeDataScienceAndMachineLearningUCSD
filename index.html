@@ -32,7 +32,7 @@
         <h3>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h3>
 
-<p>In winter of 2014, the enthusiastic students of DSSS at UCSD entered the Yelp Dataset Challenge in order to witness how the era of Big Data impacts the business decisions of professional social review services like Yelp! In our data analysis, we determine the difficulty in predicting user's review stars given the reviews they left as well as provided our best classification model, and we also added in a few visualizations for fun.</p>
+<p>In winter of 2014, the enthusiastic students of DSSS at UCSD entered the Yelp Dataset Challenge in order to witness how the era of Big Data impacts the business decisions of professional social review services like Yelp! In our data analysis, we determine the difficulty in predicting user's review stars given the reviews they left as well as provide our best classification model, and we also add in a few visualizations for fun.</p>
 
 <h3>
 <a id="data-wrangling" class="anchor" href="#data-wrangling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Wrangling</h3>
@@ -66,7 +66,7 @@
 <img src="images/TokenLength.png"></img>
 <p>Later on in the predictive analytics task we attempted to improve our classification accuracy and we returned to feature engineering and finding correlations between factors, but we will include it here under the EDA section for organization. We correlated nearly all of the given base factors from each table except for business attributes and review dates, and included new factors like average friend stars and negative/positive word ratios.</p>
 <iframe width="600" height="500" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/25.embed?width=600&height=500"></iframe>
-<p>Most of the upper triangle of the correlation is highly correlated of course because they come from the same user table, but of particular interest to us is the bottom row on the yaxis, the Review Stars entry. This row shows us possible explanatory variables or good features we can incorporate in the next step of our predictive analytics task, in which we predict the star category given a Yelper's review. Below, we see that review stars is correlated highly with the average business star, the reviewer's average star given, negative to positive word ratio, and negative and positive word rates. The first two factors are a helpful giveaway since they are averages of review stars. However, we chose not to use them so that our classifier model is robust in applications where average business star or the user's average star is unknown. Finally, positive and negative word rates are good indicators and correlate positively and negatively accordingly with star category, and we will see later on in the predictive analytics task that the Naive Bayes naturally uses the positive and negative word rate as conditional probabilities/relative frequencies in its algorithm.</p>
+<p>Most of the upper triangle of the correlation is highly correlated of course because they come from the same user table, but of particular interest to us is the bottom row on the yaxis, the Review Stars entry. This row shows us possible explanatory variables or good features we can incorporate in the next step of our predictive analytics task, in which we predict the star category given a Yelper's review. Below, we see in the table that review stars is correlated highly with the average business star, the reviewer's average star given, negative to positive word ratio, and negative and positive word rates. The first two factors are a helpful giveaway since they are averages of review stars. However, we chose not to use them so that our classifier model is robust in applications where average business star or the user's average star is unknown. Finally, positive and negative word rates are good indicators and correlate positively and negatively accordingly with star category, and we will see later on in the predictive analytics task that the Naive Bayes classifier naturally uses the positive and negative word rate as conditional probabilities/relative frequencies in its calculation. Said correlation table follows:</p>
 <img src="images/ReviewStarCorrelation.png"></img>
 <p>We then used MDS and visualized reviews grouped by business and word similarities, and we see that businesses are similar in their specific product and not on their star category, whereas words are similar if they appear close to each other such as when they are bigrams (e.g. slot machine).</p>
 <iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/14.embed?width=800&height=600"></iframe>
@@ -332,21 +332,119 @@ $("#prev").on("click", function(event) {
 
 <h3><a id="predictive-analytics" class="anchor" href="#predictive-analytics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Machine Learning Mission: Predictive Analytics</h3>
 
-<p>We split the TURBO data into training and testing subsets starting with a 40-60 ratio, and then applied several different multi-class classifiers to determine accuracy: precision and recall.</p>
+<p>We split the TURBO data into training and testing subsets starting with a 60-40 ratio, and then applied several different multi-class classifiers to compare their accuracy. In the first round we tried Bag of Words Multinomial NB (Naive Bayes), Bernoulli NB, Bigram Multinomial NB, Trigram Multinomial NB, Random Forest with 100 Estimators, SVC, Logistic Regression, and Combined Bigram-Trigram Multinomial NB:</p>
 
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
+
+<table id="table_id" class="hover">
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Recall Mean</th>
+            <th>Precision Mean</th>
+            <th>Recall Variance</th>
+            <th>Precision Variance</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Multinomial NB</td>
+       	    <td>0.60</td>
+       	    <td>0.59</td>
+       	    <td>0.16</td>
+       	    <td>0.05</td>
+        </tr>
+        <tr>
+            <td>Bernoulli NB</td>
+       	    <td>0.55</td>
+       	    <td>0.56</td>
+       	    <td>0.12</td>
+       	    <td>0.07</td>    		
+        </tr>
+
+	<tr>
+            <td>Bigram Multinomial NB</td>
+       	    <td>0.66</td>
+       	    <td>0.68</td>
+       	    <td>0.24</td>
+       	    <td>0.04</td>    		
+	</tr>
+
+	<tr>
+            <td>Trigram Multinomial NB</td>
+       	    <td>0.55</td>
+       	    <td>0.56</td>
+       	    <td>0.12</td>
+       	    <td>0.07</td>    		
+	</tr>
+
+	<tr>
+	    <td>Combined Bigram-Trigram Multinomial NB</td>
+       	    <td>0.67</td>
+       	    <td>0.69</td>
+       	    <td>0.26</td>
+       	    <td>0.07</td>    		
+	</tr>
+
+	<tr>
+	    <td>Random Forest (100 Estimators)</td>
+       	    <td>0.69</td>
+       	    <td>0.68</td>
+       	    <td>0.19</td>
+       	    <td>0.01</td>    		
+        </tr>
+
+	<tr>
+	    <td>SVC</td>
+       	    <td>0.52</td>
+       	    <td>0.54</td>
+       	    <td>0.12</td>
+       	    <td>0.07</td>    		
+	</tr>
+
+	<tr>
+	    <td>Logistic Regression</td>
+	</tr>
+
+
+    </tbody>
+</table>
+
+<script type="text/javascript">
+window.alert = function() {};
+
+$(document).ready( function () {
+    $('#table_id').DataTable();
+    $('#table_id_length').hide();
+    $('#table_id_filter').hide();
+} );
+</script>
+
+<br />
+<br />
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>Thanks to: </p>
 
 <ul>
-<li>Henry Qiu (<a href="https://github.com/heqiu" class="user-mention">@heqiu</a>)</li>
-<li>
-</li>
-<li>Ken Tien (
-*</li>
-<li>Kevin Hung (<a href="https://github.com/kevin11h" class="user-mention">@kevin11h</a>)</li>
+<li>Kevin Hung (<a href="https://github.com/kevin11h" class="user-mention">@kevin11h</a>, <a href="mailto:kevhung11@gmail.com">kevhung11 AT gmail DOT com</a>)</li>
+<li>Henry Qiu (<a href="https://github.com/heqiu" class="user-mention">@heqiu</a>, <a href="mailto:heqiu@ucsd.edu">heqiu AT ucsd DOT edu</a>)</li>
+<li>Alex Rosengarten (<a href="mailto:alexrosengarten@gmail.com"> alexrosengarten AT gmail DOT com</a>)</li>
+<li>Liz Izhikevich (<a href="mailto:eizhikev@ucsd.edu"> eizhikev AT ucsd DOT edu</a>)</li>
+<li>Rajat Shah (<a href="mailto:rajat.r.shah@gmail.com"> rajat.r.shah AT gmail DOT com</a>)</li>
+<li>Ken Tien (<a href="mailto:kentien93@gmail.com">kentien93 AT gmail DOT com</a>)</li>
+<li>Celina Chow (<a href="mailto:celinachow2@gmail.com">celinachow2 AT gmail DOT com</a>)</li>
 </ul>
       </section>
       <footer>
