@@ -332,7 +332,8 @@ $("#prev").on("click", function(event) {
 
 <h3><a id="predictive-analytics" class="anchor" href="#predictive-analytics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Machine Learning Mission: Predictive Analytics</h3>
 
-<p>We split the TURBO data into training and testing subsets starting with a 60-40 ratio, and then applied several different multi-class classifiers to compare their accuracy. In the first round we tried Bag of Words Multinomial NB (Naive Bayes), Bernoulli NB, Bigram Multinomial NB, Trigram Multinomial NB, Random Forest with 100 Estimators, SVC, Logistic Regression, and Combined Bigram-Trigram Multinomial NB:</p>
+<p>We split the TURBO data into training and testing subsets starting with a 60-40 ratio, and then applied several different multi-class classifiers to compare their accuracy.</p>
+<p> In the first round we tried Bag of Words Multinomial NB (Naive Bayes), Bernoulli NB, Bigram Multinomial NB, Trigram Multinomial NB, Bigram-Trigram Multinomial NB, Random Forest with 100 Estimators, and SVC:</p>
 
 
 <!-- DataTables CSS -->
@@ -348,74 +349,68 @@ $("#prev").on("click", function(event) {
 <table id="table_id" class="hover">
     <thead>
         <tr>
-            <th>Model</th>
+            <th style="width: 200px">Model</th>
             <th>Recall Mean</th>
             <th>Precision Mean</th>
-            <th>Recall Variance</th>
-            <th>Precision Variance</th>
+            <th>Recall RSS</th>
+            <th>Precision RSS</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Multinomial NB</td>
-       	    <td>0.60</td>
-       	    <td>0.59</td>
-       	    <td>0.16</td>
-       	    <td>0.05</td>
+            <td>Bag of Words Multinomial NB</td>
+       	    <td class="tdc">0.60</td>
+       	    <td class="tdc">0.59</td>
+       	    <td class="tdc">0.16</td>
+       	    <td class="tdc">0.05</td>
         </tr>
         <tr>
             <td>Bernoulli NB</td>
-       	    <td>0.55</td>
-       	    <td>0.56</td>
-       	    <td>0.12</td>
-       	    <td>0.07</td>    		
+       	    <td class="tdc">0.55</td>
+       	    <td class="tdc">0.56</td>
+       	    <td class="tdc">0.12</td>
+       	    <td class="tdc">0.07</td>    		
         </tr>
 
 	<tr>
             <td>Bigram Multinomial NB</td>
-       	    <td>0.66</td>
-       	    <td>0.68</td>
-       	    <td>0.24</td>
-       	    <td>0.04</td>    		
+       	    <td class="tdc">0.66</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.24</td>
+       	    <td class="tdc">0.04</td>    		
 	</tr>
 
 	<tr>
             <td>Trigram Multinomial NB</td>
-       	    <td>0.55</td>
-       	    <td>0.56</td>
-       	    <td>0.12</td>
-       	    <td>0.07</td>    		
+       	    <td class="tdc">0.64</td>
+       	    <td class="tdc">0.67</td>
+       	    <td class="tdc">0.28</td>
+       	    <td class="tdc">0.05</td>    		
 	</tr>
 
 	<tr>
-	    <td>Combined Bigram-Trigram Multinomial NB</td>
-       	    <td>0.67</td>
-       	    <td>0.69</td>
-       	    <td>0.26</td>
-       	    <td>0.07</td>    		
+	    <td>Bigram-Trigram Multinomial NB</td>
+       	    <td class="tdc">0.67</td>
+       	    <td class="tdc">0.69</td>
+       	    <td class="tdc">0.26</td>
+       	    <td class="tdc">0.07</td>    		
 	</tr>
 
 	<tr>
 	    <td>Random Forest (100 Estimators)</td>
-       	    <td>0.69</td>
-       	    <td>0.68</td>
-       	    <td>0.19</td>
-       	    <td>0.01</td>    		
+       	    <td class="tdc">0.69</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.19</td>
+       	    <td class="tdc">0.01</td>    		
         </tr>
 
 	<tr>
 	    <td>SVC</td>
-       	    <td>0.52</td>
-       	    <td>0.54</td>
-       	    <td>0.12</td>
-       	    <td>0.07</td>    		
+       	    <td class="tdc">0.52</td>
+       	    <td class="tdc">0.54</td>
+       	    <td class="tdc">0.51</td>
+       	    <td class="tdc">0.03</td>    		
 	</tr>
-
-	<tr>
-	    <td>Logistic Regression</td>
-	</tr>
-
-
     </tbody>
 </table>
 
@@ -423,11 +418,22 @@ $("#prev").on("click", function(event) {
 window.alert = function() {};
 
 $(document).ready( function () {
-    $('#table_id').DataTable();
+    $('#table_id').DataTable({
+        "order": [[ 1, "desc" ]]
+    });
     $('#table_id_length').hide();
     $('#table_id_filter').hide();
+    $('#table_id_info').hide();
+    $('#table_id_paginate').hide();
+
 } );
 </script>
+
+<style>
+td.tdc {
+  text-align: center;
+}
+</style>
 
 <br />
 <br />
@@ -435,7 +441,7 @@ $(document).ready( function () {
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>Thanks to: </p>
+<p>Thanks you! </p>
 
 <ul>
 <li>Kevin Hung (<a href="https://github.com/kevin11h" class="user-mention">@kevin11h</a>, <a href="mailto:kevhung11@gmail.com">kevhung11 AT gmail DOT com</a>)</li>
