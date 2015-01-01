@@ -17,7 +17,9 @@
       <header>
       <h1>Yelp Dataset Challenge 2014 Submission</h1>
       <h2>Data Science Student Society at UCSD</h2>
-      <p>by Kevin Hung and Henry Qiu</p>
+      <p>by <a href="https://github.com/kevin11h" class="user-mention">Kevin Hung</a> and <a href="https://github.com/heqiu" class="user-mention">Henry Qiu</a></p>
+
+
 
         <p class="view"><a href="https://github.com/kevin11h/YelpDatasetChallengeDataScienceAndMachineLearningUCSD">View the Project on GitHub </a></p>
 
@@ -37,14 +39,14 @@
 <h3>
 <a id="data-wrangling" class="anchor" href="#data-wrangling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Wrangling</h3>
 
-<p>The first thing we noticed was the size of the Reviews table which made loading the data difficult, so we divided it into quarters. Then we sampled the first quarter of the Reviews and inner-joined it with the key-ids from Tips, Users, and Businesses tables and ended up with the TURBO subset with 37K records (<strong>T</strong>ips, <strong>U</strong>sers, <strong>R</strong>eviews, <strong>O</strong>nly). We later on use the Checkins table in order to find the top businesses in our similarity matrix visualization.</p>
+<p>The first thing we noticed was the size of the Reviews table which made loading the data difficult, so we divided it into quarters. Then we sampled the first quarter of the Reviews and inner-joined it with the key-ids from Tips, Users, and Businesses tables and creating the TURBO subset with 37K records (<strong>T</strong>ips, <strong>U</strong>sers, <strong>R</strong>eviews, <strong>O</strong>nly). We later on use the Checkins table in order to find the top businesses in our similarity matrix visualization.</p>
 
 <h3>
 <a id="exploratory-data-analysis" class="anchor" href="#exploratory-data-analysis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exploratory Data Analysis</h3>
 
 <p>In beginning our analysis, we were initially surprised to see that the review distributions in our subset were skewed to the 4 and 5 star categories heavily. They consist of around 80% of the distribution, whereas the 1, 2, and 3 star categories are each only around 10% at most.</p>
 <img src="images/StarCategoryDistributions.png" alt="Star Category Distributions">
-<p>This is confirmed by <a href="http://minimaxir.com/2014/09/one-star-five-stars/"> a separate analysis </a> by Max Woolf on 1 and 5 star reviews that showed, excellent visualization aside, that Yelp reviews have started to appear more biased optimistically as time passes. Our sample subset reflects this pattern on distribution, although uneven class distribution will become noteworthy in our predictive analytics task.</p>
+<p>This is confirmed by <a href="http://minimaxir.com/2014/09/one-star-five-stars/"> a separate analysis </a> by Max Woolf on 1 and 5 star reviews that showed, excellent visualization aside, that Yelp reviews have started to appear more optimistically biased as time passes. Our sample subset reflects this skewed distribution, although uneven class distribution will become noteworthy in our predictive analytics task.</p>
 <p>Next we were curious about what kinds of words, including unigrams, bigrams and trigrams, are characteristic of different star categories so we threw in some quick wordcloud visualizations using the R "tm" package.</p>
 <h4 style="text-align: center">Wordcloud of 1 Star Reviews</h4>
 <img src="images/1StarWordCloud.png" style="display: block; margin-left: auto; margin-right: auto;"></img>
@@ -441,16 +443,16 @@ td.tdc {
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>Thanks you! </p>
+<p>Thank you! </p>
 
 <ul>
-<li>Kevin Hung (<a href="https://github.com/kevin11h" class="user-mention">@kevin11h</a>, <a href="mailto:kevhung11@gmail.com">kevhung11 AT gmail DOT com</a>)</li>
-<li>Henry Qiu (<a href="https://github.com/heqiu" class="user-mention">@heqiu</a>, <a href="mailto:heqiu@ucsd.edu">heqiu AT ucsd DOT edu</a>)</li>
-<li>Alex Rosengarten (<a href="mailto:alexrosengarten@gmail.com"> alexrosengarten AT gmail DOT com</a>)</li>
-<li>Liz Izhikevich (<a href="mailto:eizhikev@ucsd.edu"> eizhikev AT ucsd DOT edu</a>)</li>
-<li>Rajat Shah (<a href="mailto:rajat.r.shah@gmail.com"> rajat.r.shah AT gmail DOT com</a>)</li>
-<li>Ken Tien (<a href="mailto:kentien93@gmail.com">kentien93 AT gmail DOT com</a>)</li>
-<li>Celina Chow (<a href="mailto:celinachow2@gmail.com">celinachow2 AT gmail DOT com</a>)</li>
+<li><a href="mailto:kevhung11@gmail.com">Kevin Hung</a></li>
+<li><a href="mailto:heqiu@ucsd.edu">Henry Qiu</a></li>
+<li>Alex Rosengarten</li>
+<li>Liz Izhikevich</li>
+<li>Ken Tien</li>
+<li>Celina Chow</li>
+<li>Rajat Shah</li>
 </ul>
       </section>
       <footer>
