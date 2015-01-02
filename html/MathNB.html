@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Yelp Predictive Analytics</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+<style type="text/css">
+    .clearfix{*zoom:1}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0}
+.clearfix:after{clear:both}
+a:focus{outline:thin dotted #333;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}
+@media print{*{text-shadow:none !important;color:#000 !important;background:transparent !important;box-shadow:none !important} a,a:visited{text-decoration:underline} a[href]:after{content:" (" attr(href) ")"} abbr[title]:after{content:" (" attr(title) ")"} .ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""} pre,blockquote{border:1px solid #999;page-break-inside:avoid} thead{display:table-header-group} tr,img{page-break-inside:avoid} img{max-width:100% !important} @page {margin:.5cm}p,h2,h3{orphans:3;widows:3} h2,h3{page-break-after:avoid}}body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#000;background-color:#fff}
+a{color:#08c;text-decoration:none}
+a:hover,a:focus{color:#005580;text-decoration:underline}
+p{margin:0 0 10px}
+
+h3{margin:10px 0;font-family:inherit;font-weight:bold;line-height:20px;color:inherit;text-rendering:optimizelegibility}
+h3{line-height:40px}
+h3{font-size:22.75px}
+body { padding: 20px 50px; }
+p {font-size: 18px; }
+
+</style>
+
+<!-- Custom stylesheet, it must be in the same directory as the html file -->
+<link rel="stylesheet" href="custom.css">
+
+<!-- Loading mathjax macro -->
+<!-- Load mathjax -->
+    <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration -->
+
+</head>
+<body>
+
+<h2>Naïve Bayes Classifier Synopsis</h2>
+<p>The probability that a document \(d\) (a Yelp review) is a class \(c\) (star category) is given by Bayes' Rule: \[\\\] \[P(c | d) = {{P(c) P(d | c) } \over P(d)}\]</p>
+<p>The decision rule of the Naive Bayes model assigns the document to the class with the highest posterior probability, Maximum a posteriori (MAP): \[\\\] \[ \begin{align} c_{map} &amp;= \underset{c} {\mathrm{argmax}} ~P(c | d) \\
+                         &amp;= \underset{c} {\mathrm{argmax}} ~P(c) P(d | c) \\ 
+                         &amp;= \underset{c} {\mathrm{argmax}} ~P(c) \prod_{1 \leq k \leq n_d} P(w_k | c) \\
+                         &amp;= \underset{c} {\mathrm{argmax}} ~P(c) \prod_{w \in d} {P(w | c)}^{n_{wd}} \\
+\end{align} \] where <br /> \(w_k\) is the \(k\)th word in the document, <br /> \(n_d\) is the number of words in the document, and<br /> \(n_{wd}\) is the number of times word \(w\) appears in the document</p>
+<p>To prevent multiplication blowup and avoid potential floating point underflow, use the log probability: <br /> \[\\\] \[ \begin{align} c_{map} &amp;= \underset{c} {\mathrm{argmax}} {\text{ } \log \Big(~P(c) \prod_{w \in d} {P(w | c)}^{n_{wd}} \Big) }\\
+                         &amp;= \underset{c} {\mathrm{argmax}} {\text{ } \log ~P(c) + \log \sum_{w \in d} {P(w | c)}^{n_{wd}} }\\
+\end{align} \]</p>
+<p>With the Multinomial variation, the conditional probability of a word given a class according to : <br /></p>
+<p>\[\\\] \[ \begin{align}
+    P(w|c) &amp;= { \sum_{d \in D_c} n_{wd} \over { \sum_{w&#39; \in V} \sum_{d \in D_c}  n_{w&#39;d}} } \\
+           &amp;= { T_{wc} \over { \sum_{w&#39; \in V} T_{w&#39;c}} } \\
+\end{align} \]</p>
+<p>where \(D_c\) is the set of all documents of class \(c\), <br /> and \(T_{wc}\) is the number of times the word appears in \(T\), the concatenation of documents in class \(c\), <br /> and \(V\) is the vocabulary or the set of all words of all documents of all classes. <br /> <br /> Sometimes Laplacian smoothing is used so that for words that do not appear, such as in situations like classifying unseen documents (the zero-frequency problem), we make sure to avoid operating on probability \(\log\) 0. To do this we initialize each word count to be at least 1: <br /> <br /></p>
+<p>\[ \begin{align}
+    P(w|c) &amp;= { 1 + T_{wc} \over { \sum_{w&#39; \in V} ( 1 + T_{w&#39;c}} ) } \\
+           &amp;= { 1 + T_{wc} \over { |V| + \sum_{w&#39; \in V} T_{w&#39;c}} } \\
+\end{align} \]</p>
+<p>According to research by <a href="http://ilpubs.stanford.edu:8090/665/1/2004-48.pdf">Rennie J., Shih, L., Teevan, J., &amp; Karger, D. (2003)</a> on improving the shortcomings of Naive Bayes, one method they use in dealing with skewed training data is the Complement Naive Bayes variation, where instead of parameterizing the conditional probability \(P(w|c)\) as the relative frequency of \(w\) in a single class \(c\), instead: \[ \begin{align}
+    P(w|c) &amp;= { 1 + T_{ }w\widetilde{c} \over { \sum_{w&#39; \in V} ( 1 + T_{ }w&#39;\widetilde{c}} ) } \\
+           &amp;= { 1 + T_{ }w\widetilde{c} \over { |V| + \sum_{w&#39; \in V} T_{ }w&#39;\widetilde{c}} } \\
+\end{align} \] <br /> where \(T_{ }{w\widetilde{c}}\) is the count of word \(w\) appearing in classes other than \(c\).</p>
+</body>
+</html>
