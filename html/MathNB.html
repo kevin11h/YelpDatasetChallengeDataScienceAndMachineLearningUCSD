@@ -8,9 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-<script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-  </script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 <style type="text/css">
     .clearfix{*zoom:1}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0}
@@ -58,6 +56,8 @@ p {font-size: 18px; }
 </head>
 <body>
 
+<div id="nb-exp-body">
+
 <h2>Naïve Bayes Classifier Synopsis</h2>
 <p>The probability that a document \(d\) (a Yelp review) is a class \(c\) (star category) is given by Bayes' Rule: \[\\\] \[P(c | d) = {{P(c) P(d | c) } \over P(d)}\]</p>
 <p>The decision rule of the Naive Bayes model assigns the document to the class with the highest posterior probability, Maximum a posteriori (MAP): \[\\\] \[ \begin{align} c_{map} &amp;= \underset{c} {\mathrm{argmax}} ~P(c | d) \\
@@ -73,14 +73,40 @@ p {font-size: 18px; }
     P(w|c) &amp;= { \sum_{d \in D_c} n_{wd} \over { \sum_{w&#39; \in V} \sum_{d \in D_c}  n_{w&#39;d}} } \\
            &amp;= { T_{wc} \over { \sum_{w&#39; \in V} T_{w&#39;c}} } \\
 \end{align} \]</p>
-<p>where \(D_c\) is the set of all documents of class \(c\), <br /> and \(T_{wc}\) is the number of times the word appears in \(T\), the concatenation of documents in class \(c\), <br /> and \(V\) is the vocabulary or the set of all words of all documents of all classes. <br /> <br /> Sometimes Laplacian smoothing is used so that for words that do not appear, such as in situations like classifying unseen documents (the zero-frequency problem), we make sure to avoid operating on probability \(\log\) 0. To do this we initialize each word count to be at least 1: <br /> <br /></p>
+<p>where <br />
+\(D_c\) is the set of all documents of class \(c\), <br /> \(T_{wc}\) is the number of times the word appears in \(T\), the concatenation of documents in class \(c\), <br /> \(V\) is the vocabulary or the set of all words of all documents of all classes. <br /> <br /> Sometimes Laplacian smoothing is used so that for words that do not appear, such as in situations like classifying unseen documents (the zero-frequency problem), we make sure to avoid operating on probability \(\log\) 0. To do this we initialize each word count to be at least 1: <br /> <br /></p>
 <p>\[ \begin{align}
     P(w|c) &amp;= { 1 + T_{wc} \over { \sum_{w&#39; \in V} ( 1 + T_{w&#39;c}} ) } \\
            &amp;= { 1 + T_{wc} \over { |V| + \sum_{w&#39; \in V} T_{w&#39;c}} } \\
 \end{align} \]</p>
-<p>According to research by <a href="http://ilpubs.stanford.edu:8090/665/1/2004-48.pdf">Rennie J., Shih, L., Teevan, J., &amp; Karger, D. (2003)</a> on improving the shortcomings of Naive Bayes, one method they use in dealing with skewed training data is the Complement Naive Bayes variation, where instead of parameterizing the conditional probability \(P(w|c)\) as the relative frequency of \(w\) in a single class \(c\), instead: \[ \begin{align}
+<br />
+<p>According to research by <a href="http://ilpubs.stanford.edu:8090/665/1/2004-48.pdf">Rennie J., Shih, L., Teevan, J., &amp; Karger, D. (2003)</a> on improving the shortcomings of Naive Bayes, one method they use in dealing with skewed training data is the Complement Naive Bayes variation, where instead of parameterizing the conditional probability \(P(w|c)\) as the relative frequency of \(w\) in a single class \(c\), it is alternatively parameterized to: <br /> \[ \begin{align}
     P(w|c) &amp;= { 1 + T_{ }w\widetilde{c} \over { \sum_{w&#39; \in V} ( 1 + T_{ }w&#39;\widetilde{c}} ) } \\
            &amp;= { 1 + T_{ }w\widetilde{c} \over { |V| + \sum_{w&#39; \in V} T_{ }w&#39;\widetilde{c}} } \\
 \end{align} \] <br /> where \(T_{ }{w\widetilde{c}}\) is the count of word \(w\) appearing in classes other than \(c\).</p>
+</div>
 </body>
+
+<script type="text/javascript">
+var nbexpshowcounter = 0;
+
+MathJax.Hub.Queue(function () {
+  $('#nb-exp-body').hide();
+  $('iframe#nb-exp', window.parent.document).hide();
+
+  $('#show-naive-bayes-math', window.parent.document).click(function() {
+      nbexpshowcounter += 1;
+
+      if (nbexpshowcounter % 2 == 1) {
+        $('iframe#nb-exp', window.parent.document).show();
+        $('#nb-exp-body').show();
+      }
+      else {
+        $('iframe#nb-exp', window.parent.document).hide();
+        $('#nb-exp-body').hide();
+      }
+    });
+});
+</script>
+
 </html>
