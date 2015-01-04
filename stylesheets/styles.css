@@ -138,6 +138,10 @@ header ul {
   width:270px;
 }
 
+li {
+  font-size: 18px;
+}
+
 header li {
   width:89px;
   float:left;
