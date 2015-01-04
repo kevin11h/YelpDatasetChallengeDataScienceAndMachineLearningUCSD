@@ -335,7 +335,7 @@ $("#prev").on("click", function(event) {
 
 <h3><a id="predictive-analytics" class="anchor" href="#predictive-analytics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Machine Learning Mission: Predictive Analytics</h3>
 
-<p>We split the TURBO data into training and testing subsets starting with a 60-40 ratio, and then applied several different <a href="http://scikit-learn.org">multi-class classifiers in sklearn</a> to compare their accuracy.</p>
+<p>We split the TURBO data into training and testing subsets starting with a 60-40 ratio like in Andrew Ng's online Machine Learning class, and then applied several different <a href="http://scikit-learn.org">multi-class classifiers in sklearn</a> to compare their accuracy.</p>
 <p> In the first round we tried Bag of Words Multinomial NB (Naive Bayes), Bernoulli NB, Bigram Multinomial NB, Trigram Multinomial NB, Bigram-Trigram Multinomial NB, Random Forest with 100 Estimators, and SVC:</p>
 
 
@@ -479,9 +479,12 @@ Formally, precision and recall are:
 
 <p>We searched online on how to upgrade Naive Bayes for classes with skewed distributions and tried implementing the strategy of <a href="http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.cs.waikato.ac.nz%2F~eibe%2Fpubs%2FFrankAndBouckaertPKDD06new.pdf&ei=3ySmVLrKNM2togSlzoLwDQ&usg=AFQjCNFtHJCQBDfQ4CwXsN37466k-y1A6A">E Frank, RR Bouckaert (2006)</a> to intialize the word count priors (Laplacian smoothing parameter) with a normalized value as well another strategy by <a href="http://people.csail.mit.edu/jrennie/papers/icml03-nb.pdf">Rennie J., Shih, L., Teevan, J., & Karger, D. (2003)</a> to use the relative word count of complement classes as the conditional probability parameter, both in the attempt to improve Naive Bayes' shortcoming with skewed classes.</p>
 
-<p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <a id="show-naive-bayes-math" href="#nb-exp">click here</a> to show our mathematical explanation below if you're curious about it or wish to review/reaffirm what you may already know!</p>
+<p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <a id="show-naive-bayes-math" href="#nb-exp">click here</a> or the button below in order to show our mathematical explanation if you're curious about it or wish to review/reaffirm what you may already know!</p>
 
 <iframe id="nb-exp" src="./html/MathNB.html" width=870px height=1830px scrolling="no"></iframe>
+
+<p style="text-align: center;"><button id="nb-exp-button">Hide/Show Math</button></p>
+
 
 <br />
 <br />
@@ -559,7 +562,7 @@ $(document).ready( function () {
 
 <br />
 <br />
-<p>In comparison to the models in the first round, particularly the Bigram Multinomial Naive Bayes, the recall and precision averages of the second round models did not increase, but their recall and precision RSS decreased slightly. At this point, we realized two things: that we may have met the recall and precision accuracy barrier given the size of our training data, but that we could also try optimizing the RSS values if not the average recall and precision. Knowing this we attempted a strategy called <a href="http://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis"> Oversampling</a> in order to combat the unfairly skewed accuracy to the 4 and 5 star reviews because of their 80% majority and in the effort to improve the recall and precisions of the 1, 2, and 3 star reviews (the goal of which is the same as decreasing the RSS). Observing the fact that 1, 2, and 3 star reviews are commonly misclassified as 4 star reviews, we used oversampling on the 60% training data to replicate the number of 1, 2, and 3 star reviews until they each were equal to the amount of 4 star reviews. </p>
+<p>In comparison to the models in the first round, particularly the Bigram Multinomial Naive Bayes, the recall and precision averages of the second round models did not increase, but their recall and precision RSS decreased slightly. At this point, we realized two things: that we may have met the recall and precision accuracy barrier given the size of our training data, but that we could also try optimizing the RSS values if not the average recall and precision. Knowing this we attempted a strategy called <a href="http://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis">oversampling</a> in order to combat the unfairly skewed accuracy to the 4 and 5 star reviews because of their 80% majority and in the effort to improve the recall and precisions of the 1, 2, and 3 star reviews (the goal of which is the same as decreasing the RSS). Observing the fact that 1, 2, and 3 star reviews are commonly misclassified as 4 star reviews, we used oversampling on the 60% training data to replicate the number of 1, 2, and 3 star reviews until they each were equal to the amount of 4 star reviews. </p>
 
 <br />
 <br />
