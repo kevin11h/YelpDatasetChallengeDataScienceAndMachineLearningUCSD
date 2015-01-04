@@ -335,7 +335,7 @@ $("#prev").on("click", function(event) {
 
 <h3><a id="predictive-analytics" class="anchor" href="#predictive-analytics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Machine Learning Mission: Predictive Analytics</h3>
 
-<p>We split the TURBO data into training and testing subsets starting with a 60-40 ratio, and then applied several different multi-class classifiers in sklearn to compare their accuracy.</p>
+<p>We split the TURBO data into training and testing subsets starting with a 60-40 ratio, and then applied several different <a href="http://scikit-learn.org">multi-class classifiers in sklearn</a> to compare their accuracy.</p>
 <p> In the first round we tried Bag of Words Multinomial NB (Naive Bayes), Bernoulli NB, Bigram Multinomial NB, Trigram Multinomial NB, Bigram-Trigram Multinomial NB, Random Forest with 100 Estimators, and SVC:</p>
 
 
@@ -487,7 +487,7 @@ Formally, precision and recall are:
 <br />
 
 <p>We wrote our own version of Naive Bayes which supported <a href="http://gist.github.com/kevin11h/cb7fd17d2f0595f5098b">OvA and Complement variations</a>, and made sure to use vectorization in our code with numpy for efficiency.</p>
-<p>Also, utilizing the factor analysis information in the EDA phase and how the negative to positive word count ratio was a highly correlated factor excluding business stars and the reviewer's average stars, we also attempted feature engineering by increasing the number of negative sentiment words (obtained from Bing Liu's <a href="http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html">opinion mining database</a>) found in Yelp reviews. All three of these models in the second round used bigrams as the tokens:</p>
+<p>Also, utilizing the factor analysis information we gathered the EDA phase and the fact that the negative to positive word count ratio was a highly correlated factor (~ -0.35) excluding business stars and the reviewer's average stars (both of which we assume are unknown to model realistic scenarios), we also attempted feature engineering by increasing the number of negative sentiment words (obtained from Bing Liu's <a href="http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html">opinion mining database</a>) found in Yelp reviews. This model is what we dub the "Overly Negative" Naive Bayes in the effort to better discriminate 1, 2, and 3 star reviews from being confused with 4 star reviews. Just out of curiosity we also played with <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">sklearn's Multiclass Logistic Regression</a> model an also trained it on the same design matrix as the Overly Naive Bayes model. All these models in the second round used bigrams as the tokens:</p>
 
 <br />
 
@@ -524,6 +524,15 @@ Formally, precision and recall are:
        	    <td class="tdc">0.19</td>
        	    <td class="tdc">0.01</td>    		
 	</tr>
+
+	<tr>
+	    <td>Multiclass Logistic Regression</td>
+       	    <td class="tdc">0.67</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.22</td>
+       	    <td class="tdc">0.01</td>
+	</tr>
+            
     </tbody>
 </table>
 
