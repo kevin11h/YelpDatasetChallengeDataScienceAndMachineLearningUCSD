@@ -62,7 +62,7 @@
 
 <h4 style="text-align: center">Wordcloud of 5 Star Reviews</h4>
 <img src="images/5StarWordCloud.png" style="display: block; margin-left: auto; margin-right: auto;"></img>
-<p>Lesson learned: if one were to start a successful business, then open a Mexican-Chinese-BBQ buffet in Sin City with Wifi, convenient parking, icecream on the menu, and make sure to have loving and friendly staff members.</p>
+<p>Lesson learned: if one were to start a successful business, then open a Mexican-Chinese-BBQ buffet in Sin City with free Wifi, convenient parking, icecream on the menu, and make sure to have loving and friendly staff members!</p>
 
 <p>In EDA, we're trying to find pertinent features for the next step which is the predictive analytics/machine learning task, so we did factor analysis on the review text (e.g. average token length between star classes, positive/negative words rate per review, average star given by friends of reviewers, etc). We noticed after preprocessing the review text by stemming, removing stopwords, and tokenizing, the average token length is around 20-30 tokens for each star classes, and the token lengths mainly range between 0 and 150.</p>
 <img src="images/TokenLength.png"></img>
@@ -477,13 +477,80 @@ Formally, precision and recall are:
 
 <p>After analyzing the results of the first round, we decided that the top model, Random Forest with 100 Estimators, takes too long train (approximately 2 minutes) and has varying mean recall values ranging from 68-70% due to its nondeterministic algorithm. In addition, the next best model, the bigram-trigram Multinomial Naive Bayes, only performs 1-2% better than model number 3, the Bigram Multinomial, so we decided in the next round to improve the performance of Bigram Multinomial Naive Bayes and hopefully tackle the skewed classes situation.</p>
 
-<p>We searched online on how to upgrade Naive Bayes for classes with skewed distributions and tried implementing the strategy of <a href="http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.cs.waikato.ac.nz%2F~eibe%2Fpubs%2FFrankAndBouckaertPKDD06new.pdf&ei=3ySmVLrKNM2togSlzoLwDQ&usg=AFQjCNFtHJCQBDfQ4CwXsN37466k-y1A6A">E Frank, RR Bouckaert (2006)</a> to intialize the word count priors (Laplacian smoothing parameter) with a normalized value as well another strategy by <a href="http://ilpubs.stanford.edu:8090/665/1/2004-48.pdf">Rennie J., Shih, L., Teevan, J., & Karger, D. (2003)</a> to use the relative word count of complement classes as the conditional probability parameter, both in the attempt to improve Naive Bayes' shortcoming with skewed classes.</p>
+<p>We searched online on how to upgrade Naive Bayes for classes with skewed distributions and tried implementing the strategy of <a href="http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.cs.waikato.ac.nz%2F~eibe%2Fpubs%2FFrankAndBouckaertPKDD06new.pdf&ei=3ySmVLrKNM2togSlzoLwDQ&usg=AFQjCNFtHJCQBDfQ4CwXsN37466k-y1A6A">E Frank, RR Bouckaert (2006)</a> to intialize the word count priors (Laplacian smoothing parameter) with a normalized value as well another strategy by <a href="http://people.csail.mit.edu/jrennie/papers/icml03-nb.pdf">Rennie J., Shih, L., Teevan, J., & Karger, D. (2003)</a> to use the relative word count of complement classes as the conditional probability parameter, both in the attempt to improve Naive Bayes' shortcoming with skewed classes.</p>
 
-<p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <a id="show-naive-bayes-math" href="#nb-exp">click here</a> to show our mathematical explanation below if you're curious about it or wish to review/reaffirm what you may already know.</p>
+<p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <a id="show-naive-bayes-math" href="#nb-exp">click here</a> to show our mathematical explanation below if you're curious about it or wish to review/reaffirm what you may already know!</p>
 
 <iframe id="nb-exp" src="./html/MathNB.html" width=870px height=1830px scrolling="no"></iframe>
 
+<br />
+<br />
 
+<p>We wrote our own version of Naive Bayes which supported <a href="http://gist.github.com/kevin11h/cb7fd17d2f0595f5098b">OvA and Complement variations</a>, and made sure to use vectorization in our code with numpy for efficiency.</p>
+<p>Also, utilizing the factor analysis information in the EDA phase and how the negative to positive word count ratio was a highly correlated factor excluding business stars and the reviewer's average stars, we also attempted feature engineering by increasing the number of negative sentiment words (obtained from Bing Liu's <a href="http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html">opinion mining database</a>) found in Yelp reviews. All three of these models in the second round used bigrams as the tokens:</p>
+
+<br />
+
+<table id="table_id2" class="hover">
+    <thead>
+        <tr>
+            <th style="width: 200px">Model</th>
+            <th>Recall Mean</th>
+            <th>Precision Mean</th>
+            <th>Recall RSS</th>
+            <th>Precision RSS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Complement NB</td>
+       	    <td class="tdc">0.66</td>
+       	    <td class="tdc">0.67</td>
+       	    <td class="tdc">0.24</td>
+       	    <td class="tdc">0.04</td>
+        </tr>
+        <tr>
+            <td>One-versus-All NB</td>
+       	    <td class="tdc">0.66</td>
+       	    <td class="tdc">0.67</td>
+       	    <td class="tdc">0.22</td>
+       	    <td class="tdc">0.03</td>    		
+        </tr>
+
+	<tr>
+            <td>Overly Negative NB</td>
+       	    <td class="tdc">0.65</td>
+       	    <td class="tdc">0.64</td>
+       	    <td class="tdc">0.19</td>
+       	    <td class="tdc">0.01</td>    		
+	</tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+window.alert = function() {};
+
+$(document).ready( function () {
+    $('#table_id2').DataTable({
+        "order": [[ 1, "desc" ]]
+    });
+    $('#table_id2_length').hide();
+    $('#table_id2_filter').hide();
+    $('#table_id2_info').hide();
+    $('#table_id2_paginate').hide();
+
+} );
+</script>
+
+<br />
+<br />
+<p>And for the star category-detailed classification results here are our corresponding confusion matrices: </p>
+<br />
+<img src="images/second_round_cm.png"></img>
+
+<br />
+<br />
+<p>In comparison to the models in the first round, particularly the Bigram Multinomial Naive Bayes, the recall and precision averages of the second round models did not increase, but their recall and precision RSS decreased slightly. At this point, we realized two things: that we may have met the recall and precision accuracy barrier given the amount of training data, but that we could also try optimizing the RSS values if not the average recall and precision. Knowing this we attempted a strategy called <a href="http://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis"> Oversampling</a> in order to combat the unfairly skewed accuracy to the 4 and 5 star reviews because of their 80% majority and in the effort to improve the recall and precisions of the 1, 2, and 3 star reviews (the goal of which is the same as decreasing the RSS). Observing the fact that 1, 2, and 3 star reviews are mainly misclassified as 4 star reviews, we used oversampling on the 60% training data to replicate the number of 1, 2, and 3 star reviews until they each were equal to the amount of 4 star reviews. </p>
 
 <br />
 <br />
