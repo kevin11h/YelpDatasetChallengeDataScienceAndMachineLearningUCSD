@@ -94,12 +94,15 @@ MathJax.Hub.Queue(function () {
   $('#nb-exp-body').hide();
   $('iframe#nb-exp', window.parent.document).hide();
 
-  $('#show-naive-bayes-math', window.parent.document).click(function() {
+  $('#show-naive-bayes-math, #nb-exp-button', window.parent.document).click(function() {
       nbexpshowcounter += 1;
 
       if (nbexpshowcounter % 2 == 1) {
         $('iframe#nb-exp', window.parent.document).show();
         $('#nb-exp-body').show();
+
+	var h = $('body').height();        
+	$('iframe#nb-exp', window.parent.document).height(h);
       }
       else {
         $('iframe#nb-exp', window.parent.document).hide();

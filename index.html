@@ -481,16 +481,16 @@ Formally, precision and recall are:
 
 <p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <a id="show-naive-bayes-math" href="#nb-exp">click here</a> or the button below in order to show our mathematical explanation if you're curious about it or wish to review/reaffirm what you may already know!</p>
 
-<iframe id="nb-exp" src="./html/MathNB.html" width=870px height=1830px scrolling="no"></iframe>
+<iframe id="nb-exp" src="./html/MathNB.html" width=870px height=1600px scrolling="no"></iframe>
 
-<p style="text-align: center;"><button id="nb-exp-button">Hide/Show Math</button></p>
+<p style="text-align: center;"><button id="nb-exp-button"><a href="#show-naive-bayes-math"></a>Hide/Show Math</button></p>
 
 
 <br />
 <br />
 
 <p>We wrote our own version of Naive Bayes which supported <a href="http://gist.github.com/kevin11h/cb7fd17d2f0595f5098b">OvA and Complement variations</a>, and made sure to use vectorization in our code with numpy for efficiency.</p>
-<p>Also, utilizing the factor analysis information we gathered the EDA phase and the fact that the negative to positive word count ratio was a highly correlated factor (~ -0.35) excluding business stars and the reviewer's average stars (both of which we assume are unknown to model realistic scenarios), we also attempted feature engineering by increasing the number of negative sentiment words (obtained from Bing Liu's <a href="http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html">opinion mining database</a>) found in Yelp reviews. This model is what we dub the "Overly Negative" Naive Bayes in the effort to better discriminate 1, 2, and 3 star reviews from being confused with 4 star reviews. Just out of curiosity we also played with <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">sklearn's Multiclass Logistic Regression</a> model an also trained it on the same design matrix as the Overly Naive Bayes model. All these models in the second round used bigrams as the tokens:</p>
+<p>Also, utilizing the factor analysis information we gathered the EDA phase and the fact that the negative to positive word count ratio was a highly correlated factor (&rho; &TildeFullEqual; -0.35) excluding business stars and the reviewer's average stars (both of which we assume are unknown to model realistic scenarios), we also attempted feature engineering by increasing the number of negative sentiment words (obtained from Bing Liu's <a href="http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html">opinion mining database</a>) found in Yelp reviews. This model is what we dub the "Overly Negative" Naive Bayes in the effort to better discriminate 1, 2, and 3 star reviews from being confused with 4 star reviews. Just out of curiosity we also played with <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">sklearn's Multiclass Logistic Regression</a> model an also trained it on the same design matrix as the Overly Naive Bayes model. All these models in the second round used bigrams as the tokens:</p>
 
 <br />
 
@@ -562,7 +562,65 @@ $(document).ready( function () {
 
 <br />
 <br />
-<p>In comparison to the models in the first round, particularly the Bigram Multinomial Naive Bayes, the recall and precision averages of the second round models did not increase, but their recall and precision RSS decreased slightly. At this point, we realized two things: that we may have met the recall and precision accuracy barrier given the size of our training data, but that we could also try optimizing the RSS values if not the average recall and precision. Knowing this we attempted a strategy called <a href="http://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis">oversampling</a> in order to combat the unfairly skewed accuracy to the 4 and 5 star reviews because of their 80% majority and in the effort to improve the recall and precisions of the 1, 2, and 3 star reviews (the goal of which is the same as decreasing the RSS). Observing the fact that 1, 2, and 3 star reviews are commonly misclassified as 4 star reviews, we used oversampling on the 60% training data to replicate the number of 1, 2, and 3 star reviews until they each were equal to the amount of 4 star reviews. </p>
+<p>In comparison to the models in the first round, particularly the Bigram Multinomial Naive Bayes, the recall and precision averages of the second round models did not increase, but their recall and precision RSS decreased slightly. It seemed that even though we put so much effort in feature engineering and taking the sentiment of the Yelp reviews into account, our models still could not surpass the 68-70% recall and precision results. At this point, we realized two things: that we may have met a recall and precision accuracy barrier/upper bound given the size of our training data, but that we could also try optimizing the RSS values if not the average recall and precision. Knowing this we attempted a strategy called <a href="http://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis">oversampling</a> in order to combat the unfairly skewed accuracy to the 4 and 5 star reviews because of their 80% majority and in the effort to improve the recall and precisions of the 1, 2, and 3 star reviews (the goal of which is the same as decreasing the RSS). Observing the fact that 1, 2, and 3 star reviews are commonly misclassified as 4 star reviews, we used oversampling on the 60% training data to replicate the number of 1, 2, and 3 star reviews until they each were equal to the amount of 4 star reviews. </p>
+
+<br />
+<p>As the third and final round of our machine learning mission, the result of Bigram Multinomial with oversampling for 1, 2, and 3 star reviews compared with the nonoversampled Bigram Multinomial from round 1 is optimistic:</p>
+<br />
+
+<table id="table_id3" class="hover">
+    <thead>
+        <tr>
+            <th style="width: 200px">Model</th>
+            <th>Recall Mean</th>
+            <th>Precision Mean</th>
+            <th>Recall RSS</th>
+            <th>Precision RSS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Bigram Multinomial NB with Oversampling for Minority Classes</td>
+       	    <td class="tdc">0.66</td>
+       	    <td class="tdc">0.65</td>
+       	    <td class="tdc">0.11</td>
+       	    <td class="tdc">0.07</td>
+        </tr>
+        <tr>
+            <td>Bigram Multinomial NB from Round 1 No Oversampling</td>
+       	    <td class="tdc">0.66</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.24</td>
+       	    <td class="tdc">0.04</td>    		
+        </tr>
+
+	<tr>
+            <td>Overly Negative NB</td>
+       	    <td class="tdc">0.65</td>
+       	    <td class="tdc">0.64</td>
+       	    <td class="tdc">0.19</td>
+       	    <td class="tdc">0.01</td>    		
+	</tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+window.alert = function() {};
+
+$(document).ready( function () {
+    $('#table_id3').DataTable({
+        "order": [[ 1, "desc" ]]
+    });
+    $('#table_id3_length').hide();
+    $('#table_id3_filter').hide();
+    $('#table_id3_info').hide();
+    $('#table_id3_paginate').hide();
+
+} );
+</script>
+
+
+
 
 <br />
 <br />
