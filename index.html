@@ -479,17 +479,23 @@ Formally, precision and recall are:
 
 <p>We searched online on how to upgrade Naive Bayes for classes with skewed distributions and tried implementing the strategy of <a href="http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.cs.waikato.ac.nz%2F~eibe%2Fpubs%2FFrankAndBouckaertPKDD06new.pdf&ei=3ySmVLrKNM2togSlzoLwDQ&usg=AFQjCNFtHJCQBDfQ4CwXsN37466k-y1A6A">E Frank, RR Bouckaert (2006)</a> to intialize the word count priors (Laplacian smoothing parameter) with a normalized value as well another strategy by <a href="http://people.csail.mit.edu/jrennie/papers/icml03-nb.pdf">Rennie J., Shih, L., Teevan, J., & Karger, D. (2003)</a> to use the relative word count of complement classes as the conditional probability parameter, both in the attempt to improve Naive Bayes' shortcoming with skewed classes.</p>
 
-<p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <a id="show-naive-bayes-math" href="#nb-exp">click here</a> or the button below in order to show our mathematical explanation if you're curious about it or wish to review/reaffirm what you may already know!</p>
+<p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <span id="show-naive-bayes-math"><a id="show-naive-bayes-math" href="#nb-exp">click here</a></span> or the button below in order to show our mathematical explanation if you're curious about it or wish to review/reaffirm what you may already know!</p>
 
 <iframe id="nb-exp" src="./html/MathNB.html" width=870px height=1600px scrolling="no"></iframe>
 
-<p style="text-align: center;"><button id="nb-exp-button"><a href="#show-naive-bayes-math"></a>Hide/Show Math</button></p>
+<p style="text-align: center;"><button id="nb-exp-button"><a href="#show-naive-bayes-math">Hide/Show Math</a></button></p>
+
+<script type="text/javascript">
+$("#nb-exp-button").click(function() {
+    $('html, body').animate({
+        scrollTop: $("iframe#nb-exp").offset().top
+    }, 2000);
+});
+</script>
 
 
-<br />
-<br />
 
-<p>We wrote our own version of Naive Bayes which supported <a href="http://gist.github.com/kevin11h/cb7fd17d2f0595f5098b">OvA and Complement variations</a>, and made sure to use vectorization in our code with numpy for efficiency.</p>
+<p>We wrote our own version of Naive Bayes included <a href="http://gist.github.com/kevin11h/cb7fd17d2f0595f5098b">OvA and Complement support</a>, and made sure to use vectorization in our code with numpy for efficiency.</p>
 <p>Also, utilizing the factor analysis information we gathered the EDA phase and the fact that the negative to positive word count ratio was a highly correlated factor (&rho; &TildeFullEqual; -0.35) excluding business stars and the reviewer's average stars (both of which we assume are unknown to model realistic scenarios), we also attempted feature engineering by increasing the number of negative sentiment words (obtained from Bing Liu's <a href="http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html">opinion mining database</a>) found in Yelp reviews. This model is what we dub the "Overly Negative" Naive Bayes in the effort to better discriminate 1, 2, and 3 star reviews from being confused with 4 star reviews. Just out of curiosity we also played with <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">sklearn's Multiclass Logistic Regression</a> model an also trained it on the same design matrix as the Overly Naive Bayes model. All these models in the second round used bigrams as the tokens:</p>
 
 <br />
