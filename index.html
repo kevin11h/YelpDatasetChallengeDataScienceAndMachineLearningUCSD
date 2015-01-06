@@ -34,7 +34,7 @@
         <h3>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h3>
 
-<p>In winter of 2014, the brave young men and women of the Data Science Student Society at UCSD entered the Yelp Dataset Challenge in order to witness how the era of Big Data impacts the business decisions of professional social review services like Yelp! In our data analysis, we determine the difficulty in predicting user's review stars given the reviews they left as well as provide our best classification model, and we also add in a few visualizations for fun.</p>
+<p>In Winter of 2014, the brave young men and women of the Data Science Student Society at UCSD entered the Yelp Dataset Challenge in order to witness how the era of Big Data impacts the business decisions of professional social review services like Yelp! In our data analysis, we determine the difficulty in predicting user's review stars given the reviews they left as well as provide our best classification model, and we also add in a few visualizations for fun.</p>
 
 <h3>
 <a id="data-wrangling" class="anchor" href="#data-wrangling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Wrangling</h3>
@@ -44,10 +44,10 @@
 <h3>
 <a id="exploratory-data-analysis" class="anchor" href="#exploratory-data-analysis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exploratory Data Analysis</h3>
 
-<p>In beginning our analysis, we were initially surprised to see that the review distributions in our subset were skewed to the 4 and 5 star categories heavily. They consist of around 80% of the distribution, whereas the 1, 2, and 3 star categories are each only around 10% at most.</p>
+<p>In starting our analysis, we were initially surprised to see that the review distributions in our subset were skewed to the 4 and 5 star categories heavily. They consist of around 80% of the distribution, whereas the 1, 2, and 3 star categories are each only around 10-15% at most.</p>
 <img src="images/StarCategoryDistributions.png" alt="Star Category Distributions">
 <p>This is confirmed by <a href="http://minimaxir.com/2014/09/one-star-five-stars/"> a separate analysis </a> by Max Woolf on 1 and 5 star reviews which showed, excellent visualization aside, that Yelp reviews have started to appear more optimistically biased as time passes. Our sample subset reflects this skewed distribution, and uneven class distribution will become noteworthy further on in our predictive analytics task.</p>
-<p>Next we were curious about what kinds of words, including unigrams, bigrams and trigrams, are characteristic of different star categories so we threw in some quick wordcloud visualizations using the R "tm" package.</p>
+<p>Next we were curious about what kinds of words, including unigrams, bigrams and trigrams, are characteristic of different star categories so we threw in some quick wordcloud visualizations using the R "tm" and "wordcloud" packages.</p>
 <h4 style="text-align: center">Wordcloud of 1 Star Reviews</h4>
 <img src="images/1StarWordCloud.png" style="display: block; margin-left: auto; margin-right: auto;"></img>
 
@@ -68,11 +68,13 @@
 <img src="images/TokenLength.png"></img>
 <p>Later on in the predictive analytics task we attempted to improve our classification accuracy and we returned to feature engineering and finding correlations between factors, but we will include it here under the EDA section for organization. We correlated nearly all of the given base factors from each table except for business attributes and review dates, and included new factors like average friend stars and negative/positive word ratios.</p>
 <iframe width="600" height="500" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/25.embed?width=600&height=500"></iframe>
-<p>Most of the upper triangle of the correlation is highly correlated of course because they come from the same user table, but of particular interest to us is the bottom row on the yaxis, the Review Stars entry. This row shows us possible explanatory variables or good features we can incorporate in the next step of our predictive analytics task, in which we predict the star category given a Yelper's review. Below, we see in the table that review stars is correlated highly with the average business star, the reviewer's average star given, negative to positive word ratio, and negative and positive word rates. The first two factors are a helpful giveaway since they are averages of review stars. However, we chose not to use them so that our classifier model is robust in applications where average business star or the user's average star is unknown. Finally, positive and negative word rates are good indicators and correlate positively and negatively accordingly with star category, and we will see later on in the predictive analytics task that the Naive Bayes classifier naturally uses the positive and negative word rate as conditional probabilities/relative frequencies in its calculation. Said correlation table follows:</p>
+<br />
+<p>Most of the upper triangle of the correlation matrix have higher values of course because they come from the same user table, but of particular interest to us is the bottom row on the yaxis, the Review Stars entry. This row shows us possible explanatory variables or good features we can incorporate in the next step of our predictive analytics task, in which we predict the star category given a Yelper's review. Below, we see in the table that review stars is correlated highly with the average business star, the reviewer's average star given, negative to positive word ratio, and negative and positive word rates. The first two factors are a helpful giveaway since they are averages of review stars. However, we chose not to use them so that our classifier model is robust in applications where average business star or the user's average star is unknown. Finally, positive and negative word rates are good indicators and correlate positively and negatively accordingly with star category, and we will see later on in the predictive analytics task that the Naive Bayes classifier naturally uses the positive and negative word rate as conditional probabilities/relative frequencies in its calculation. Said correlation table follows:</p>
 <img src="images/ReviewStarCorrelation.png"></img>
-<p>We then used MDS and visualized reviews grouped by business and word similarities, and we see that businesses are similar in their specific product and not on their star category, whereas words are similar if they appear close to each other such as when they are bigrams (e.g. slot machine).</p>
+<br />
+<p>We then used MDS and visualized reviews grouped by business and word similarities, and we see that businesses are similar in their specific product/review text and not on their star category, whereas words are similar if they appear close to each other such as when they are bigrams (e.g. slot machine).</p>
 <iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/14.embed?width=800&height=600"></iframe>
-<p>In both above and below similarity plots, pairs of scatter points that are closer together represent greater similarity while pairs of far away points represent dissimilarity.</p>
+<p>In both above and below similarity plots, pairs of scatter points that are closer together represent greater similarity while pairs of points lying far away from each other represent dissimilarity.</p>
 <iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/18.embed?width=800&height=600"></iframe>
 <p>That pretty much describes the EDA. And we included a business similarity matrix for the top checked in places (using the Checkins table) and a calendar heatmap for fun. </p>
 <iframe width="800" height="600" frameborder="0" seamless="seamless" scrolling="no" src="https://plot.ly/~kevin11h/16.embed?width=800&height=600"></iframe>
@@ -473,11 +475,9 @@ Formally, precision and recall are:
 
 <p>Precision and recall RSS are necessary because, for example, in one extreme the SVC classifier attempts to classify almost all reviews as 5 stars to maximize accuracy, given that the majority of reviews are 5 stars. The recall and precision RSS values would be high because 5 star reviews would be far more accurate than 1, 2, 3 and 4 star reviews. However, this short-sighted favoritism towards 5 star reviews comes at a cost of higher inaccuracy (lower precision and recall values) for classifying the 1, 2, 3, and 4 star reviews. Even in other classifiers as well, 4 and 5 star reviews are more favored because they represent the majority (nearly 80%) of Yelp reviews, so as a result 1,2, and 3 star reviews are harder to classify with 2 stars being the most difficult! </p>
 
-<br />
-
 <p>After analyzing the results of the first round, we decided that the top model, Random Forest with 100 Estimators, takes too long train (approximately 2 minutes) and has varying mean recall values ranging from 68-70% due to its nondeterministic algorithm. In addition, the next best model, the bigram-trigram Multinomial Naive Bayes, only performs 1-2% better than model number 3, the Bigram Multinomial, so we decided in the next round to improve the performance of Bigram Multinomial Naive Bayes and hopefully tackle the skewed classes situation.</p>
 
-<p>We searched online on how to upgrade Naive Bayes for classes with skewed distributions and tried implementing the strategy of <a href="http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.cs.waikato.ac.nz%2F~eibe%2Fpubs%2FFrankAndBouckaertPKDD06new.pdf&ei=3ySmVLrKNM2togSlzoLwDQ&usg=AFQjCNFtHJCQBDfQ4CwXsN37466k-y1A6A">E Frank, RR Bouckaert (2006)</a> to intialize the word count priors (Laplacian smoothing parameter) with a normalized value as well another strategy by <a href="http://people.csail.mit.edu/jrennie/papers/icml03-nb.pdf">Rennie J., Shih, L., Teevan, J., & Karger, D. (2003)</a> to use the relative word count of complement classes as the conditional probability parameter, both in the attempt to improve Naive Bayes' shortcoming with skewed classes.</p>
+<p>We searched online on how to improve the Naive Bayes classifier for datasets with skewed class distributions and tried implementing the strategy of <a href="http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.cs.waikato.ac.nz%2F~eibe%2Fpubs%2FFrankAndBouckaertPKDD06new.pdf&ei=3ySmVLrKNM2togSlzoLwDQ&usg=AFQjCNFtHJCQBDfQ4CwXsN37466k-y1A6A">E Frank, RR Bouckaert (2006)</a> to intialize the word count priors (Laplacian smoothing parameter) with a normalized value as well another strategy by <a href="http://people.csail.mit.edu/jrennie/papers/icml03-nb.pdf">Rennie J., Shih, L., Teevan, J., & Karger, D. (2003)</a> to use the relative word count of complement classes as the conditional probability parameter, both in the attempt to improve Naive Bayes' shortcoming with skewed classes.</p>
 
 <p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <span id="show-naive-bayes-math"><a id="show-naive-bayes-math" href="#nb-exp">click here</a></span> or the button below in order to show our mathematical explanation if you're curious about it or wish to review/reaffirm what you may already know!</p>
 
@@ -601,13 +601,6 @@ $(document).ready( function () {
     </tbody>
 </table>
 
-<br />
-<p>As a small tradeoff for "quality" of Yelp reviews classified, represented by the precision score, we gained a drastically reduced recall RSS score which means that the the "quantity" of Yelp reviews classified correctly for each star category became fairer. This is an improvement from the previous Bigram Multinomial Naive Bayes model without oversampling in round 1, where 4 and 5 star Yelp reviews had a higher quantity classified correctly at a cost of the recall for 1, 2, and 3 star reviews. As you can see in the below confusion matrices for the third round, the diagonals for the Oversampled Bigram Naive Bayes model have brighter values for the 1, 2, and 3 star reviews than the non-oversampled model: </p>
-<img src="images/third_round_cm.png"></img>
-
-<br />
-<p>To conclude our machine learning mission, we varied the training-testing dataset sizes to observe the result that as training data increased, our Naive Bayes classifiers made less errors on less testing data and therefore recall and precision scores increased: </p>
-
 <script type="text/javascript">
 window.alert = function() {};
 
@@ -623,7 +616,135 @@ $(document).ready( function () {
 } );
 </script>
 
+<br />
+<p>As a small tradeoff for "quality" of Yelp reviews classified, represented by the precision score, we gained a drastically reduced recall RSS score which means that the the "quantity" of Yelp reviews classified correctly for each star category became fairer. This is an improvement from the previous Bigram Multinomial Naive Bayes model without oversampling in round 1, where 4 and 5 star Yelp reviews had a higher quantity classified correctly at a cost of the recall for 1, 2, and 3 star reviews. As you can see in the below confusion matrices for the third round, the diagonals for the Oversampled Bigram Naive Bayes model have brighter values for the 1, 2, and 3 star reviews than the non-oversampled model: </p>
+<img src="images/third_round_cm.png"></img>
 
+<br />
+<p>To conclude our machine learning mission, we varied the training-testing dataset sizes to observe the result that as training data increased, our Naive Bayes classifiers made less errors on less testing data and therefore recall and precision scores increased: </p>
+
+<table id="table_id4" class="hover">
+    <thead>
+        <tr>
+            <th style="width: 200px">Model</th>
+            <th>Recall Mean</th>
+            <th>Precision Mean</th>
+            <th>Recall RSS</th>
+            <th>Precision RSS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Bigram Multinomial NB with Oversampling and 80% Training</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.10</td>
+       	    <td class="tdc">0.06</td>
+        </tr>
+        <tr>
+            <td>Bigram Multinomial NB with Oversampling and 60% Training</td>
+       	    <td class="tdc">0.66</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.11</td>
+       	    <td class="tdc">0.06</td>    		
+        </tr>
+        <tr>
+            <td>Bigram Multinomial NB with Oversampling and 40% Training</td>
+       	    <td class="tdc">0.63</td>
+       	    <td class="tdc">0.63</td>
+       	    <td class="tdc">0.12</td>
+       	    <td class="tdc">0.08</td>    		
+        </tr>
+        <tr>
+            <td>Bigram Multinomial NB with Oversampling and 20% Training</td>
+       	    <td class="tdc">0.57</td>
+       	    <td class="tdc">0.56</td>
+       	    <td class="tdc">0.14</td>
+       	    <td class="tdc">0.10</td>    		
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+window.alert = function() {};
+
+$(document).ready( function () {
+    $('#table_id4').DataTable({
+        "order": [[ 1, "desc" ]]
+    });
+    $('#table_id4_length').hide();
+    $('#table_id4_filter').hide();
+    $('#table_id4_info').hide();
+    $('#table_id4_paginate').hide();
+
+} );
+</script>
+
+<br />
+<p>In comparison with Random Forest with 100 Learners on various training data sizes and no oversampling, although Bigram Naive Bayes with oversampling is only around 2-3% less in recall and less 5-7% in precision, it makes up by being less biased in classifying the 4 and 5 star Yelp reviews by 10-16% as shown by the recall RSS! This is a tradeoff worth considering, since 4 and 5 star reviews make up the 80% majority and we'd like to focus on improving the recall and precision of the 1, 2, and 3 star Yelp reviews even though they each only comprise less than 15% of the total Yelp reviews in our sample.</p>
+
+<table id="table_id5" class="hover">
+    <thead>
+        <tr>
+            <th style="width: 200px">Model</th>
+            <th>Recall Mean</th>
+            <th>Precision Mean</th>
+            <th>Recall RSS</th>
+            <th>Precision RSS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Random Forest (100 Learners) w/o Oversampling and 80% Training</td>
+       	    <td class="tdc">0.71</td>
+       	    <td class="tdc">0.73</td>
+       	    <td class="tdc">0.20</td>
+       	    <td class="tdc">0.03</td>
+        </tr>
+        <tr>
+            <td>Random Forest (100 Learners) w/o Oversampling and 60% Training</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.70</td>
+       	    <td class="tdc">0.23</td>
+       	    <td class="tdc">0.04</td>    		
+        </tr>
+        <tr>
+            <td>Random Forest (100 Learners) w/o Oversampling and 40% Training</td>
+       	    <td class="tdc">0.65</td>
+       	    <td class="tdc">0.68</td>
+       	    <td class="tdc">0.26</td>
+       	    <td class="tdc">0.05</td>    		
+        </tr>
+        <tr>
+            <td>Random Forest (100 Learners) w/o Oversampling and 20% Training</td>
+       	    <td class="tdc">0.60</td>
+       	    <td class="tdc">0.63</td>
+       	    <td class="tdc">0.30</td>
+       	    <td class="tdc">0.06</td>    		
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+window.alert = function() {};
+
+$(document).ready( function () {
+    $('#table_id5').DataTable({
+        "order": [[ 1, "desc" ]]
+    });
+    $('#table_id5_length').hide();
+    $('#table_id5_filter').hide();
+    $('#table_id5_info').hide();
+    $('#table_id5_paginate').hide();
+
+} );
+</script>
+
+<br />
+<p>Finally in terms of classifier accuracy, again comparing the Bigram Multinomial NB with oversampling to Random Forest with 100 Learners, not only is the NB model quicker to train (the time ranging in seconds) while Random Forest takes a few minutes (and it is also a nondeterminstic algorithm), the recall scores that represent the quantity of Yelp reviews classified correctly is only 2-3% less, suggesting that a simple classifier like NB performs close to optimal on par with a more complicated ensemble model like Random Forest. A classic explanation that convinced us our Bigram Naive Bayes with oversampling results were on the right level of accuracy with Random Forest is an interesting paper by <a href="http://www.aaai.org/Papers/FLAIRS/2004/Flairs04-097.pdf">Zhang, H. (2004)</a> that describes the optimal performance behind Naive Bayes.</p>
+
+<br />
+To conclude our 
 
 
 <br />
