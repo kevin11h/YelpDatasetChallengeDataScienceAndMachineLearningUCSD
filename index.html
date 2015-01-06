@@ -46,7 +46,7 @@
 
 <p>In beginning our analysis, we were initially surprised to see that the review distributions in our subset were skewed to the 4 and 5 star categories heavily. They consist of around 80% of the distribution, whereas the 1, 2, and 3 star categories are each only around 10% at most.</p>
 <img src="images/StarCategoryDistributions.png" alt="Star Category Distributions">
-<p>This is confirmed by <a href="http://minimaxir.com/2014/09/one-star-five-stars/"> a separate analysis </a> by Max Woolf on 1 and 5 star reviews which showed, excellent visualization aside, that Yelp reviews have started to appear more optimistically biased as time passes. Our sample subset reflects this skewed distribution, although uneven class distribution will become noteworthy in our predictive analytics task.</p>
+<p>This is confirmed by <a href="http://minimaxir.com/2014/09/one-star-five-stars/"> a separate analysis </a> by Max Woolf on 1 and 5 star reviews which showed, excellent visualization aside, that Yelp reviews have started to appear more optimistically biased as time passes. Our sample subset reflects this skewed distribution, and uneven class distribution will become noteworthy further on in our predictive analytics task.</p>
 <p>Next we were curious about what kinds of words, including unigrams, bigrams and trigrams, are characteristic of different star categories so we threw in some quick wordcloud visualizations using the R "tm" package.</p>
 <h4 style="text-align: center">Wordcloud of 1 Star Reviews</h4>
 <img src="images/1StarWordCloud.png" style="display: block; margin-left: auto; margin-right: auto;"></img>
@@ -570,8 +570,7 @@ $(document).ready( function () {
 <br />
 <p>In comparison to the models in the first round, particularly the Bigram Multinomial Naive Bayes, the recall and precision averages of the second round models did not increase, but their recall and precision RSS decreased slightly. It seemed that even though we put so much effort in feature engineering and taking the sentiment of the Yelp reviews into account, our models still could not surpass the 68-70% recall and precision results. At this point, we realized two things: that we may have met a recall and precision accuracy barrier/upper bound given the size of our training data, but that we could also try optimizing the RSS values if not the average recall and precision. Knowing this we attempted a strategy called <a href="http://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis">oversampling</a> in order to combat the unfairly skewed accuracy to the 4 and 5 star reviews because of their 80% majority and in the effort to improve the recall and precisions of the 1, 2, and 3 star reviews (the goal of which is the same as decreasing the RSS). Observing the fact that 1, 2, and 3 star reviews are commonly misclassified as 4 star reviews, we used oversampling on the 60% training data to replicate the number of 1, 2, and 3 star reviews until they each were equal to the amount of 4 star reviews. </p>
 
-<br />
-<p>As the third and final round of our machine learning mission, the result of Bigram Multinomial with oversampling for 1, 2, and 3 star reviews compared with the nonoversampled Bigram Multinomial from round 1 is optimistic:</p>
+<p>As the third and final round of our machine learning mission, the result of Bigram Multinomial with oversampling for 1, 2, and 3 star reviews compared with the non-oversampled Bigram Multinomial from the first round is optimistic:</p>
 <br />
 
 <table id="table_id3" class="hover">
@@ -593,22 +592,21 @@ $(document).ready( function () {
        	    <td class="tdc">0.07</td>
         </tr>
         <tr>
-            <td>Bigram Multinomial NB from Round 1 No Oversampling</td>
+            <td>Bigram Multinomial NB from Round 1 without Oversampling</td>
        	    <td class="tdc">0.66</td>
        	    <td class="tdc">0.68</td>
        	    <td class="tdc">0.24</td>
        	    <td class="tdc">0.04</td>    		
         </tr>
-
-	<tr>
-            <td>Overly Negative NB</td>
-       	    <td class="tdc">0.65</td>
-       	    <td class="tdc">0.64</td>
-       	    <td class="tdc">0.19</td>
-       	    <td class="tdc">0.01</td>    		
-	</tr>
     </tbody>
 </table>
+
+<br />
+<p>As a small tradeoff for "quality" of Yelp reviews classified, represented by the precision score, we gained a drastically reduced recall RSS score which means that the the "quantity" of Yelp reviews classified correctly for each star category became fairer. This is an improvement from the previous Bigram Multinomial Naive Bayes model without oversampling in round 1, where 4 and 5 star Yelp reviews had a higher quantity classified correctly at a cost of the recall for 1, 2, and 3 star reviews. As you can see in the below confusion matrices for the third round, the diagonals for the Oversampled Bigram Naive Bayes model have brighter values for the 1, 2, and 3 star reviews than the non-oversampled model: </p>
+<img src="images/third_round_cm.png"></img>
+
+<br />
+<p>To conclude our machine learning mission, we varied the training-testing dataset sizes to observe the result that as training data increased, our Naive Bayes classifiers made less errors on less testing data and therefore recall and precision scores increased: </p>
 
 <script type="text/javascript">
 window.alert = function() {};
