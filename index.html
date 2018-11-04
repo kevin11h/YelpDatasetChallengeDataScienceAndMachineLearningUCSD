@@ -55,10 +55,58 @@
       <h1>Yelp Dataset Challenge 2014 <a style="inline" href="http://www.yelp.com/dataset_challenge"><i class="fa fa-external-link"></i> </a></h1>
       <!--h2>Data Science Student Society at UCSD</h2-->
       
-      <p>by <a href="https://twitter.com/M8taD8ta" class="user-mention">Kevin Hung</a> and <a href="https://github.com/heqiu" class="user-mention">Henry Qiu</a> of UCSD's (very own!)</p>
-      <a href="http://joshintheweb.com/ds3/projects-2/" title="" rel="home">
-            <img src="http://joshintheweb.com/ds3/wp-content/uploads/2015/05/cropped-DS3-Logo.png" alt="">
+      <p>by <a href="https://twitter.com/kevin11hg" class="user-mention">Kevin Hung</a> and <a href="https://github.com/heqiu" class="user-mention">Henry Qiu</a> of UCSD's (our very own!)</p>
+      <a href="https://angel.co/data-science-student-society-at-ucsd" title="" rel="home">
+            <img src="https://d1qb2nb5cznatu.cloudfront.net/startups/i/787970-2a253d00f443eaedc74eaf22cc6a205a-medium_jpg.jpg?buster=1527007825" alt="">
       </a>
+
+      <h2>Data Science Student Society at UCSD</h2>
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.fa-social {
+  padding: 20px;
+  font-size: 30px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+ 
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
+}
+
+ 
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+
+.fa-angellist {
+  background: black;
+  color: white;
+}
+
+.fa-github {
+  background: white;
+  color: black;
+}
+
+ </style>
+
+
+      <!-- Add font awesome icons -->
+<a href="https://www.linkedin.com/company/data-science-student-society-at-ucsd/" class="fa fa-social fa-linkedin"></a>
+<a href="https://github.com/kevin11" class="fa fa-social fa-github"></a>
+<a href="https://angel.co/data-science-student-society-at-ucsd" class="fa fa-social fa-angellist"></a>
+<a href="https://twitter.com/kevin11hg" class="fa fa-social fa-twitter"></a>
 
 
 
@@ -128,7 +176,7 @@
 <div id="ipython-output">
 
 
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
 
 <h3>Yelp Reviews by Date in Years 2006-2014 from TURBO Subset</h3>
 
@@ -157,11 +205,13 @@
 
 	
 
+<script src="https://cdn.wordart.com/wordart.min.js" async defer></script>
 
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.js"></script>
-<script type="text/javascript" src="http://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
 
 <script type="text/javascript">
     var cal2009 = new CalHeatMap();
@@ -384,13 +434,13 @@ $("#prev").on("click", function(event) {
 
 
 <!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
   
 <!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   
 <!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
 
 
 <table id="table_id" class="hover">
@@ -521,9 +571,14 @@ Formally, precision and recall are:
 
 <p>We searched online on how to improve the Naive Bayes classifier for datasets with skewed class distributions and tried implementing the strategy of <a href="http://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.cs.waikato.ac.nz%2F~eibe%2Fpubs%2FFrankAndBouckaertPKDD06new.pdf&ei=3ySmVLrKNM2togSlzoLwDQ&usg=AFQjCNFtHJCQBDfQ4CwXsN37466k-y1A6A">E Frank, RR Bouckaert (2006)</a> to intialize the word count priors (Laplacian smoothing parameter) with a normalized value as well another strategy by <a href="http://people.csail.mit.edu/jrennie/papers/icml03-nb.pdf">Rennie J., Shih, L., Teevan, J., & Karger, D. (2003)</a> to use the relative word count of complement classes as the conditional probability parameter, both in the attempt to improve Naive Bayes' shortcoming with skewed classes.</p>
 
-<p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <span id="show-naive-bayes-math"><a id="show-naive-bayes-math" href="#nb-exp">click here</a></span> or the button below in order to show our mathematical explanation if you're curious about it or wish to review/reaffirm what you may already know!</p>
+<p>The idea of the Naive Bayes algorithm is meant to be simple in its assumptions and probability calculations, but for those who are not math-inclined we have hidden it from sight. Otherwise, <span id="show-naive-bayes-math"><a id="show-naive-bayes-math" href="#nb-exp">click here</a></span> or the button below in order to show our mathematical explanation if you're curious about it or wish to review/reaffirm what you may already know in your heart!</p>
 
-<iframe id="nb-exp" src="./html/MathNB.html" width=870px height=1600px scrolling="no"></iframe>
+
+<div id="nb-exp-body">
+<iframe id="nb-exp" src="./html/MathNB.html" width=870px height=1600px scrolling="no">
+
+</iframe>
+</div>
 
 <p style="text-align: center;"><button id="nb-exp-button"><a href="#show-naive-bayes-math">Hide/Show Math</a></button></p>
 
@@ -790,24 +845,41 @@ $(document).ready( function () {
 
 <h3 style="text-align: center">Yelper's Thanksgiving Week</h3>
 <div id="thanksgiving-tagul" style="text-align: center">
-<div style="width: 800px; height: 600px; padding-bottom: 30px;">
-  <script src="http://cdn.tagul.com/embed/yjiopbxrreau"></script>
+
+<div style="width: 800px; height: 600px;  padding-bottom: 30px; " data-wordart-src="https://cdn.wordart.com/json/yjiopbxrreau" data-wordart-show-attribution></div>
+
+
+<!--div style="width: 800px; height: 600px; padding-bottom: 30px;">
+  <script src="https://cdn.tagul.com/embed/yjiopbxrreau"></script-->
+
+
+
   <!-- Please don't remove attribution to Tagul.com 
-  <div style="display: table; margin: 0 auto;"><a href="http://tagul.com/">Created with Tagul.com</a></div> -->
-</div>
+  <div style="display: table; margin: 0 auto;"><a href="http://tagul.com/">Created with Tagul.com</a></div>
+</div-->
 </div>
 
 <h3 style="text-align: center">Yelper's Christmas-New Year's Week</h3>
 <div id="christmas-new-years-tagul" style="text-align: center">
-  <div style="width: 800px; height: 800px; padding-bottom: 30px;">
-    <script src="http://cdn.tagul.com/embed/xjiopc3c3aok"></script>
+
+<div style="width: 800px; height: 800px;  padding-bottom: 30px; " data-wordart-src="https://cdn.wordart.com/json/xjiopc3c3aok" data-wordart-show-attribution></div>
+
+
+  <!--div style="width: 800px; height: 800px; padding-bottom: 30px;">
+    <script src="https://cdn.tagul.com/embed/xjiopc3c3aok"></script-->
     <!-- Please don't remove attribution to Tagul.com 
-    <div style="display: table; margin: 0 auto;"><a href="http://tagul.com/">Created with Tagul.com</a></div> -->
-  </div>
+    <div style="display: table; margin: 0 auto;"><a href="http://tagul.com/">Created with Tagul.com</a></div>
+  </div-->
 </div>
 
 <h3>Have a Peaceful Holiday Season and a Happy New Year!</h3>
 <p>From the hearts of the Data Science Student Society at UCSD to yours, with <a href="http://www.charitynavigator.org/">love</a>.</p>
+
+
+
+
+<img src="https://d2gn4xht817m0g.cloudfront.net/p/product_screenshots/images/original/000/901/754/901754-c3828e484817f6ed7765fa8b7985a757f10df4b2.jpg?1541319489" />
+
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
@@ -834,4 +906,31 @@ $(document).ready( function () {
     <script src="javascripts/scale.fix.js"></script>
     
   </body>
+
+
+<script type="text/javascript">
+var nbexpshowcounter = 0;
+
+MathJax.Hub.Queue(function () {
+  $('#nb-exp-body').hide();
+  $('iframe#nb-exp').hide();
+
+  $('#show-naive-bayes-math, #nb-exp-button').click(function() {
+      nbexpshowcounter += 1;
+
+      if (nbexpshowcounter % 2 == 1) {
+        $('iframe#nb-exp' ).show();
+        $('#nb-exp-body').show();
+
+	var h = $('body').height();        
+	$('iframe#nb-exp').height(h + 77);
+      }
+      else {
+        $('iframe#nb-exp').hide();
+        $('#nb-exp-body').hide();
+      }
+    });
+});
+</script>
+
 </html>

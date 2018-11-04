@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 <style type="text/css">
     .clearfix{*zoom:1}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0}
@@ -56,7 +56,7 @@ p {font-size: 18px; }
 </head>
 <body>
 
-<div id="nb-exp-body">
+<!--div id="nb-exp-body"-->
 
 <h2>Naïve Bayes Classifier Synopsis</h2>
 <p>The probability that a document \(d\) (a Yelp review) is a class \(c\) (star category) is given by Bayes' Rule: \[\\\] \[P(c | d) = {{P(c) P(d | c) } \over P(d)}\]</p>
@@ -84,10 +84,12 @@ p {font-size: 18px; }
     P(w|c) &amp;= { 1 + T_{ }w\widetilde{c} \over { \sum_{w&#39; \in V} ( 1 + T_{ }w&#39;\widetilde{c}} ) } \\
            &amp;= { 1 + T_{ }w\widetilde{c} \over { |V| + \sum_{w&#39; \in V} T_{ }w&#39;\widetilde{c}} } \\
 \end{align} \] <br /> where \(T_{ }{w\widetilde{c}}\) is the count of word \(w\) appearing in classes other than \(c\).</p>
-</div>
+
+<!--/div-->
+
 </body>
 
-<script type="text/javascript">
+<!--script type="text/javascript">
 var nbexpshowcounter = 0;
 
 MathJax.Hub.Queue(function () {
@@ -110,6 +112,6 @@ MathJax.Hub.Queue(function () {
       }
     });
 });
-</script>
+</script-->
 
 </html>
